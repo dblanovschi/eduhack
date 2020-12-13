@@ -70,11 +70,8 @@ VALUES (1, 'rucsac', 2, 'https://www.pbinfo.ro/probleme/1340/rucsac'),
        (1, 'spectacole', 1, 'https://www.pbinfo.ro/probleme/353/spectacole');
 
 INSERT INTO resources (subject, grade, res_name, description, markdown)
-VALUES ('informatica', 11, 'test', 'test', 'test');
-
-INSERT INTO resources (subject, grade, res_name, description, markdown)
 VALUES
-       ('informatica', 11, 'subprograme', 'Un subprogram este o colecție de tipuri de date, variabile, instrucțiuni care îndeplinesc o anumită sarcină (calcule, citiri, afișări), atunci când este apelat de un program sau de un alt subprogram.',
+       ('informatica', 10, 'subprograme', 'Un subprogram este o colecție de tipuri de date, variabile, instrucțiuni care îndeplinesc o anumită sarcină (calcule, citiri, afișări), atunci când este apelat de un program sau de un alt subprogram.',
         'Un subprogram este o colecție de tipuri de date, variabile, instrucțiuni care îndeplinesc o anumită sarcină (calcule, citiri, afișări), atunci când este apelat de un program sau de un alt subprogram.
 
 Pentru a înțelege conceptul de subprogram, să considerăm două probleme:
@@ -210,3 +207,9 @@ Față de cele de mai sus, putem observa următoarele:
   - dacă am fi avut apelul `citire(k, v[k]);` am fi obținut de asemenea eroare de compilare, `v[k]` fiind elementul de indice k din tabloul v, deci o variabilă de tip int, nu tablou;
 - observați prezența caracterului `&` înaintea parametrului formal `n` din antetul funcției citire. Acesta transformă parametrul formal într-un alias al parametrului actual, iar modificările făcute asupra parametrului formal `n` au loc de fapt asupra parametrului actual `k` din `main`;
 ');
+
+INSERT INTO exercises (resource_id, name, difficulty_level, link)
+VALUES (2, 'FactorialF', 1, 'https://www.pbinfo.ro/probleme/896/factorialf'),
+       (2, 'SumCifF', 1, 'https://www.pbinfo.ro/probleme/897/sumciff'),
+       (2, 'NrMaxim', 2, 'https://www.pbinfo.ro/probleme/1509/nrmaxim'),
+       (2, 'SumFactCif', 2, 'https://www.pbinfo.ro/probleme/898/sumfactcif');

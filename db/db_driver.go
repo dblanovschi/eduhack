@@ -12,6 +12,7 @@ import (
 type Resource struct {
 	Id          int    `json:"id"`
 	Subject     string `json:"subject"`
+	Grade       int    `json:"grade"`
 	Name        string `json:"name"`
 	Description string `json:"description"`
 	Markdown    string `json:"markdown"`
@@ -46,7 +47,7 @@ func GetResourceByName(name string) (*Resource, error) {
 	db := OpenDB()
 	defer db.Close()
 
-	row := db.QueryRow("SELECT id, subject, res_name, description, html FROM resources WHERE res_name = ?;", name)
+	row := db.QueryRow("SELECT id, subject, grade, res_name, description, markdown FROM resources WHERE res_name = ?;", name)
 
 	if row == nil {
 		return nil, fmt.Errorf("no such resource")
@@ -54,10 +55,11 @@ func GetResourceByName(name string) (*Resource, error) {
 
 	var id = 0
 	var subject = ""
+	var grade = 0
 	var resName = ""
 	var description = ""
 	var html = ""
-	err := row.Scan(&id, &subject, &resName, &description, &html)
+	err := row.Scan(&id, &subject, &grade, &resName, &description, &html)
 
 	if err != nil {
 		return nil, err
@@ -66,6 +68,7 @@ func GetResourceByName(name string) (*Resource, error) {
 	return &Resource{
 		Id:          id,
 		Subject:     subject,
+		Grade:       grade,
 		Name:        resName,
 		Description: description,
 		Markdown:    html,
@@ -76,17 +79,18 @@ func GetResourceById(id int) (*Resource, error) {
 	db := OpenDB()
 	defer db.Close()
 
-	row := db.QueryRow("SELECT subject, res_name, description, markdown FROM resources WHERE id = ?;", id)
+	row := db.QueryRow("SELECT subject, grade, res_name, description, markdown FROM resources WHERE id = ?;", id)
 
 	if row == nil {
 		return nil, fmt.Errorf("no such resource")
 	}
 
 	var subject = ""
+	var grade = 0
 	var resName = ""
 	var description = ""
 	var markdown = ""
-	err := row.Scan(&subject, &resName, &description, &markdown)
+	err := row.Scan(&subject, &grade, &resName, &description, &markdown)
 
 	if err != nil {
 		return nil, err
@@ -95,6 +99,7 @@ func GetResourceById(id int) (*Resource, error) {
 	return &Resource{
 		Id:          id,
 		Subject:     subject,
+		Grade:       grade,
 		Name:        resName,
 		Description: description,
 		Markdown:    markdown,
@@ -105,7 +110,7 @@ func GetAllResources() ([]Resource, error) {
 	db := OpenDB()
 	defer db.Close()
 
-	rows, err := db.Query("SELECT id, subject, res_name, description, markdown FROM resources;")
+	rows, err := db.Query("SELECT id, subject, grade, res_name, description, markdown FROM resources;")
 
 	if err != nil {
 		return nil, err
@@ -117,10 +122,11 @@ func GetAllResources() ([]Resource, error) {
 	for rows.Next() {
 		var id = 0
 		var subject = ""
+		var grade = 0
 		var resName = ""
 		var description = ""
 		var markdown = ""
-		err := rows.Scan(&id, &subject, &resName, &description, &markdown)
+		err := rows.Scan(&id, &subject, &grade, &resName, &description, &markdown)
 
 		if err != nil {
 			return nil, err
@@ -129,6 +135,7 @@ func GetAllResources() ([]Resource, error) {
 		resources = append(resources, Resource{
 			Id:          id,
 			Subject:     subject,
+			Grade:       grade,
 			Name:        resName,
 			Description: description,
 			Markdown:    markdown,

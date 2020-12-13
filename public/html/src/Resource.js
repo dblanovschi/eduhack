@@ -1,7 +1,7 @@
 import React from 'react';
 import ROOT from "./Constants";
 import {useParams} from 'react-router-dom';
-import {Divider, GridList, GridListTile} from "@material-ui/core";
+import {Box, Divider, GridList, GridListTile} from "@material-ui/core";
 import ReactMarkdown from "react-markdown";
 import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter'
 import {dark} from 'react-syntax-highlighter/dist/esm/styles/prism'
@@ -57,19 +57,20 @@ class ResourceW extends React.Component {
         const {error, isLoaded, id, exercises, item} = this.state;
 
         if (error) {
-            return <div>Error: {error.message}</div>;
+            return <div>Eroare: {error.message}</div>;
         } else if (!isLoaded) {
-            return <div>Loading...</div>;
+            return <div>Se încarcă...</div>;
         } else {
             const renderers = {
                 code: ({language, value}) => {
-                    return <SyntaxHighlighter style={dark} language={language} children={value} />
+                    return <SyntaxHighlighter style={dark} language={language} children={value}/>
                 }
             }
             return (
                 <div>
                     <h1>{item.name}</h1>
-                    <ReactMarkdown className={"resource-markdown"} renderers={renderers} style={dark}>{item.markdown}</ReactMarkdown>
+                    <ReactMarkdown className={"resource-markdown"} renderers={renderers}
+                                   style={dark}>{item.markdown}</ReactMarkdown>
 
                     <Divider/>
 
@@ -80,9 +81,11 @@ class ResourceW extends React.Component {
                         <GridList cols={3} cellHeight={200}>
                             {
                                 exercises.map((exercise) =>
-                                    <GridListTile>
-                                        <h1><a href={exercise.link}>{exercise.name}</a></h1>
-                                        <p>Dificultate = {exercise.difficulty_level}</p>
+                                    <GridListTile className="exercise-list-item">
+                                        <Box className="exercise-box">
+                                            <h1><a href={exercise.link}>{exercise.name}</a></h1>
+                                            <p>Dificultate: {exercise.difficulty_level == 1 ? "usor" : exercise.difficulty_level == 2 ? "mediu" : exercise.difficulty_level == 3 ? "greu" : "foarte greu"}</p>
+                                        </Box>
                                     </GridListTile>
                                 )
                             }

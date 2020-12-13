@@ -1,7 +1,7 @@
 import './resources.css';
 
 import React from 'react';
-import {Box, Divider, GridList, GridListTile} from "@material-ui/core";
+import {Box, Divider, GridList, GridListTile, InputLabel, MenuItem, Select} from "@material-ui/core";
 
 import ROOT from './Constants';
 
@@ -11,7 +11,9 @@ class Resources extends React.Component {
         this.state = {
             error: null,
             isLoaded: false,
-            items: []
+            items: [],
+            grade: 'none',
+            subject: 'none'
         };
     }
 
@@ -35,25 +37,61 @@ class Resources extends React.Component {
     }
 
     render() {
-        const {error, isLoaded, items} = this.state;
+        const {error, isLoaded, items, grade, subject} = this.state;
         if (error) {
-            return <div>Error: {error.message}</div>;
+            return <div>Eroare: {error.message}</div>;
         } else if (!isLoaded) {
-            return <div>Loading...</div>;
+            return <div>Se încarcă...</div>;
         } else {
+            let r = items.filter((x) => (grade == 'none' || x.grade == grade) && (subject == 'none' || x.subject == subject))
+
+            let state = () => this.state
+            let stateChange = (e) => this.setState((p) => e(p))
+
             return (
                 <div>
-                    <h1>Nota 10</h1>
+                    <Box>
+                        <InputLabel id="grade-label-id">Clasa</InputLabel>
+                        <Select labelId="grade-label-id" defaultValue={state().grade} id="grade-select-id"
+                                onChange={(e) => stateChange((prev) => {
+                                    return {
+                                        ...prev,
+                                        grade: e.target.value
+                                    }
+                                })}>
+                            <MenuItem value="none">Toate</MenuItem>
+                            <MenuItem value="9">9</MenuItem>
+                            <MenuItem value="10">10</MenuItem>
+                            <MenuItem value="11">11</MenuItem>
+                            <MenuItem value="12">12</MenuItem>
+                        </Select>
+                        <Divider/>
+
+                        <InputLabel id="subject-label-id">Materie</InputLabel>
+                        <Select labelId="subject-label-id" id="subject-select-id"
+                                defaultValue={state().subject}
+                                onChange={(e) => stateChange((prev) => {
+                                    return {
+                                        ...prev,
+                                        subject: e.target.value
+                                    }
+                                })}>
+                            <MenuItem value="none">Toate</MenuItem>
+                            <MenuItem value="informatica">Informatica</MenuItem>
+                        </Select>
+
+                    </Box>
                     <Divider/>
-                    {items.length > 0 &&
+                    {r.length > 0 &&
                     <GridList cols={3} className={"api-list"} cellHeight={320}>
-                        {items.map((item) => (
+                        {r.map((item) => (
                             <GridListTile key={item.id} className={"resource"}>
                                 <Box className={"resource-box"}>
                                     <a className="resource-link"
                                        href={ROOT + "/resource/" + item.id}>{item.name}</a>
 
-                                    <p>{item.subject}</p>
+                                    {subject == 'none' && <p>{item.subject}</p>}
+                                    {grade == 'none' && <p>(Clasa a {item.grade})</p>}
 
                                     <p className="resource-description">{item.description}</p>
                                 </Box>

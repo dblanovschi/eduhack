@@ -6,3 +6,11 @@
 
     font-size: 17px;
 }
+
+.exercise-list-item {
+    padding: 10%;
+}
+
+.exercise-box {
+    background-color: #1a1d1f;
+}
