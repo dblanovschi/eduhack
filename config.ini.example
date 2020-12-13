@@ -1,0 +1,11 @@
+DataFolder = $PathToRepo/public
+PortToListenTo = 12345
+
+# mysql database data
+[Database]
+# database name
+Name = ...
+# username
+User = ...
+# user password
+Password = ...
